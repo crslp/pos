@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
 it('can list items', function () {
     \App\Models\Item::factory()->create([
         'name' => 'Glass of Milk',

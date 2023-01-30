@@ -18,4 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('items', Controllers\ItemController::class);
+    Route::resource('items', Controllers\ItemController::class);
+    Route::resource('receipt', Controllers\ReceiptController::class);
