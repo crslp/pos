@@ -18,6 +18,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "pestphp/pest-plugin-laravel": "^1.4",
+        "pestphp/pest-plugin-livewire": "^1.0",
+        "pestphp/pest-plugin-watch": "1.x-dev",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
@@ -61,6 +63,6 @@
             "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
