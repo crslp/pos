@@ -57,5 +57,6 @@ it('has receipt items', function () {
     $response->assertSee('1.89');
     $response->assertSee('Spaghetti');
     $response->assertSee('9.59');
+    $response->assertSee('(Split 2)');
     $response->assertStatus(200);
 });
