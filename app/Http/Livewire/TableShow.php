@@ -9,7 +9,9 @@ use Livewire\Component;
 class TableShow extends Component
 {
     public Table $table;
+
     public $orders;
+
     public $items;
 
     public function mount(Table $table)

@@ -12,7 +12,7 @@ it('has table page', function () {
 it('lists all tables', function () {
     app(\Database\Seeders\TableSeeder::class)->run();
     $response = $this->get('/table');
-    $tables = \App\Models\Table::all()->map(fn($t) => $t->name)->toArray();
+    $tables = \App\Models\Table::all()->map(fn ($t) => $t->name)->toArray();
     $response->assertSee($tables);
 });
 
@@ -48,7 +48,6 @@ it('table show page lists all orders', function () {
     $response->assertSee(['Milk', 'Wine']);
     $response->assertStatus(200);
 });
-
 
 it('table show page allows to add items to order', function () {
     $table = \App\Models\Table::create(['name' => 'One']);

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Item;
 use App\Models\Table;
 use App\Models\TableOrder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TableOrderSeeder extends Seeder
@@ -23,8 +22,8 @@ class TableOrderSeeder extends Seeder
 
         foreach ($items as $item) {
             TableOrder::create([
-               'table_id' => $table->id,
-               'item_id' => $item->id,
+                'table_id' => $table->id,
+                'item_id' => $item->id,
             ]);
         }
     }
