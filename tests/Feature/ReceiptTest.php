@@ -19,7 +19,7 @@ it('shows a list of receipts', function () {
 
     $response = $this->get(route('receipt.index'));
     $response->assertSee('19.99');
-    $response->assertSee("Table {$table->name}:");
+    $response->assertSee("Table {$table->name}");
     $response->assertStatus(200);
 });
 
@@ -58,6 +58,6 @@ it('has receipt items', function () {
     $response->assertSee('1.89');
     $response->assertSee('Spaghetti');
     $response->assertSee('9.59');
-    $response->assertSee('(Split 2)');
+    $response->assertSee('Split 2');
     $response->assertStatus(200);
 });
