@@ -1,6 +1,7 @@
 <?php
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+use function Pest\Livewire\livewire;
 
 it('has table page', function () {
     $response = $this->get('/table');
@@ -46,4 +47,24 @@ it('table show page lists all orders', function () {
 
     $response->assertSee(['Milk', 'Wine']);
     $response->assertStatus(200);
+});
+
+
+it('table show page allows to add items to order', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $milk = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Milk',
+        'price' => 1.99,
+    ]);
+    $wine = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Wine',
+        'price' => 5.99,
+    ]);
+
+    $response = $this->get(route('table.show', $table->id));
+    $response->assertSee(__('Add to order'));
+
+    livewire(\App\Http\Livewire\TableShow::class, ['table' => $table])
+        ->call('addToOrder', $milk->id)
+        ->assertSee(__('Added'));
 });

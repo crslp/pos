@@ -11,6 +11,11 @@ class TableOrder extends Model
 
     use HasFactory;
 
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
+
     public function item()
     {
         return $this->belongsTo(Item::class);

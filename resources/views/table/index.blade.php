@@ -1,7 +1,7 @@
-<div>
+<x-layout>
     @foreach($tables as $table)
         <div>
-            {{ __('Table') }} {{ $table->name }}
+            <a href="{{ route('table.show', $table->id) }}">{{ __('Table') }} {{ $table->name }}</a>
         </div>
     @endforeach
-</div>
+</x-layout>
