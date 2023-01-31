@@ -12,4 +12,9 @@ class Table extends Model
     {
         return $this->hasMany(Receipt::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(TableOrder::class);
+    }
 }

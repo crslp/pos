@@ -4,6 +4,12 @@
         {{ __('Table') }}: {{ $table->name }}
     </div>
     <div>
-        items ..
+        @forelse($table->orders ?? [] as $order)
+            <div>
+                {{ $order->item->name }}
+            </div>
+        @empty
+            {{ __('No items') }}
+        @endforelse
     </div>
 </div>
