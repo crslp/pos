@@ -52,7 +52,6 @@ class CheckoutController extends Controller
             }
         }
 
-
         return redirect(route('table.index'));
     }
 
