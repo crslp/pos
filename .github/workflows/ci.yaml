@@ -33,7 +33,7 @@ jobs:
       - name: "Run Laravel Pint"
         run: "./vendor/bin/pint"
 
-  phpunit:
+  pest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -61,4 +61,4 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: php artisan test
+        run: "./vendor/bin/pest"
