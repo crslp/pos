@@ -94,3 +94,26 @@ it('table show page allows to remove items from order', function () {
         ->call('removeFromOrder', $order->id)
         ->assertSee(__('Removed'));
 });
+
+it('table show page states to total order amount', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $milk = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Milk',
+        'price' => 4.99,
+    ]);
+    $wine = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Wine',
+        'price' => 9.99,
+    ]);
+    $order = \App\Models\TableOrder::create([
+        'table_id' => $table->id,
+        'item_id' => $milk->id,
+    ]);
+    \App\Models\TableOrder::create([
+        'table_id' => $table->id,
+        'item_id' => $wine->id,
+    ]);
+
+    $response = $this->get(route('table.show', $table->id));
+    $response->assertSee(14.98);
+});

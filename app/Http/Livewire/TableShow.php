@@ -13,12 +13,20 @@ class TableShow extends Component
 
     public $orders;
 
+    public ?float $total = null;
+
     public $items;
 
     public function mount(Table $table)
     {
         $this->table = $table;
-        $this->orders = $table->orders;
+        $this->refresh();
+    }
+
+    public function refresh()
+    {
+        $this->orders = $this->table->orders()->get();
+        $this->total = $this->table->refresh()->total;
         $this->items = Item::all();
     }
 
@@ -26,7 +34,7 @@ class TableShow extends Component
     {
         $item = Item::findOrFail($item);
         $this->table->orders()->create(['item_id' => $item->id]);
-        $this->orders = $this->table->orders()->get();
+        $this->refresh();
         session()->flash('message', __('Added'));
     }
 
@@ -34,7 +42,7 @@ class TableShow extends Component
     {
         $order = TableOrder::findOrFail($item);
         $order->delete();
-        $this->orders = $this->table->orders()->get();
+        $this->refresh();
         session()->flash('message', __('Removed'));
     }
 

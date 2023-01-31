@@ -2,11 +2,14 @@
     <div>
         @forelse($orders as $order)
             <div>
-                {{ $order->item->name }} <button type="button" wire:click="removeFromOrder({{ $order->id }})">{{ __('Remove') }}</button>
+                {{ $order->item->name }}: {{ $order->item->price }} EUR <button type="button" wire:click="removeFromOrder({{ $order->id }})">{{ __('Remove') }}</button>
             </div>
         @empty
             {{ __('No items') }}
         @endforelse
+        @if ($total)
+            {{ __('Total') }}: {{ $total }} EUR
+        @endif
     </div>
     <div>
         <div>
