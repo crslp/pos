@@ -2,5 +2,5 @@
     <div>
         <a href="{{ route('items.index') }}">{{ __('Back to all Items') }}</a>
     </div>
-    <livewire:item-create />
+    <livewire:item-edit :item="$item" />
 </x-layout>
