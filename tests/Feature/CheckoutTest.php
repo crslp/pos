@@ -30,7 +30,7 @@ it('offers to pay all items of order', function () {
     $response->assertSee(__('Pay all'));
 });
 
-it('table show page does not offer pay all button if no orders are present', function () {
+it('does not offer pay-all button if no order-items are present', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
     $milk = \App\Models\Item::factory()->create([
         'name' => 'Glass of Milk',
