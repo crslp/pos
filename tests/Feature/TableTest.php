@@ -67,3 +67,30 @@ it('table show page allows to add items to order', function () {
         ->call('addToOrder', $milk->id)
         ->assertSee(__('Added'));
 });
+
+it('table show page allows to remove items from order', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $milk = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Milk',
+        'price' => 1.99,
+    ]);
+    $wine = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Wine',
+        'price' => 5.99,
+    ]);
+    $order = \App\Models\TableOrder::create([
+        'table_id' => $table->id,
+        'item_id' => $milk->id,
+    ]);
+    \App\Models\TableOrder::create([
+        'table_id' => $table->id,
+        'item_id' => $wine->id,
+    ]);
+
+    $response = $this->get(route('table.show', $table->id));
+    $response->assertSee(__('Remove'));
+
+    livewire(\App\Http\Livewire\TableShow::class, ['table' => $table])
+        ->call('removeFromOrder', $order->id)
+        ->assertSee(__('Removed'));
+});

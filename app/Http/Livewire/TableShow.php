@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Item;
 use App\Models\Table;
+use App\Models\TableOrder;
 use Livewire\Component;
 
 class TableShow extends Component
@@ -27,6 +28,14 @@ class TableShow extends Component
         $this->table->orders()->create(['item_id' => $item->id]);
         $this->orders = $this->table->orders()->get();
         session()->flash('message', __('Added'));
+    }
+
+    public function removeFromOrder(string $item)
+    {
+        $order = TableOrder::findOrFail($item);
+        $order->delete();
+        $this->orders = $this->table->orders()->get();
+        session()->flash('message', __('Removed'));
     }
 
     public function render()
