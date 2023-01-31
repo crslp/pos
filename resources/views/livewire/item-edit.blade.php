@@ -1,17 +1,17 @@
 <div>
     {{ __('Update Item') }}
-    <div>
-        <input type="text" wire:model.defer="item.name">
+    <div class="mb-2">
+        <input class="form-control" placeholder="{{ __('Name') }}" type="text" wire:model.defer="item.name">
         @error('name') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div>
-        <input type="text" wire:model.defer="item.price">
+    <div class="mb-2">
+        <input class="form-control" placeholder="{{ __('Price') }}" type="text" wire:model.defer="item.price">
         @error('price') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div>
-        <button type="submit" wire:click="update">{{ __('Update') }}</button>
+    <div class="mb-2">
+        <button class="btn btn-primary" type="submit" wire:click="update">{{ __('Update') }}</button>
     </div>
-    <div>
+    <div class="my-4">
         @if (session()->has('message'))
             <div>
                 {{ session('message') }}

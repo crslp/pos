@@ -10,9 +10,9 @@ class ItemCreate extends Component
 {
     use WithPagination;
 
-    public string $name;
+    public string $name = '';
 
-    public $price;
+    public $price = 0;
 
     protected $rules = [
         'name' => ['required', 'string', 'max:255'],
@@ -23,6 +23,7 @@ class ItemCreate extends Component
     {
         $validated = $this->validate();
         Item::create($validated);
+        $this->reset();
     }
 
     public function render()
