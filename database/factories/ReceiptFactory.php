@@ -17,7 +17,7 @@ class ReceiptFactory extends Factory
     public function definition()
     {
         return [
-            'table' => rand(1, 5),
+            'table_id' => rand(1, 5),
             'total' => rand(1, 99),
         ];
     }

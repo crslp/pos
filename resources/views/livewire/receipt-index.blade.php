@@ -1,5 +1,5 @@
 <div>
     @foreach($receipts as $receipt)
-        <div>{{ __('Table') }} {{ $receipt->table }}: {{ $receipt->total }} EUR</div>
+        <div>{{ __('Table') }} {{ $receipt->table->name }}: {{ $receipt->total }} EUR</div>
     @endforeach
 </div>

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             ReceiptSeeder::class,
             ReceiptItemSeeder::class,
+            TableSeeder::class,
         ]);
     }
 }

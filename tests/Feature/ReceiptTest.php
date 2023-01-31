@@ -9,25 +9,28 @@ it('has receipt page', function () {
 });
 
 it('shows a list of receipts', function () {
+    \App\Models\Table::create(['name' => 'One']);
+    \App\Models\Table::create(['name' => 'Two']);
+    \App\Models\Table::create(['name' => 'Three']);
     \App\Models\Receipt::factory()->create([
-        'table' => 1,
+        'table_id' => 1,
         'total' => 19.99,
     ]);
     \App\Models\Receipt::factory()->create([
-        'table' => 3,
+        'table_id' => 3,
         'total' => 99.99,
     ]);
     $response = $this->get('/receipt');
 
     $response->assertSee('19.99');
     $response->assertSee('99.99');
-    $response->assertSee('Table 3:');
+    $response->assertSee('Table Three:');
     $response->assertStatus(200);
 });
 
 it('has receipt items', function () {
     $receipt = \App\Models\Receipt::factory()->create([
-        'table' => 1,
+        'table_id' => 1,
         'total' => 19.99,
     ]);
     \App\Models\ReceiptItem::factory()->create([

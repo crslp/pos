@@ -18,5 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('items', Controllers\ItemController::class);
+Route::resource('item', Controllers\ItemController::class);
 Route::resource('receipt', Controllers\ReceiptController::class);
+Route::resource('table', Controllers\TableController::class);

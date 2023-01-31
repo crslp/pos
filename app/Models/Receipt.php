@@ -13,4 +13,9 @@ class Receipt extends Model
     {
         return $this->hasMany(ReceiptItem::class);
     }
+
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
 }

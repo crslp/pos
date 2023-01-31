@@ -11,14 +11,14 @@ it('can list items', function () {
         'price' => 1.99,
     ]);
 
-    $this->get(route('items.index'))
+    $this->get(route('item.index'))
         ->assertSee('Glass of Milk')
         ->assertSee('1.99')
         ->assertSeeLivewire(\App\Http\Livewire\ItemIndex::class);
 });
 
 it('has a create form', function () {
-    $this->get(route('items.create'))->assertSee(__('Save'));
+    $this->get(route('item.create'))->assertSee(__('Save'));
 });
 
 it('can create an item', function () {
@@ -27,12 +27,12 @@ it('can create an item', function () {
         ->set('price', 1.99)
         ->call('save');
 
-    $this->get(route('items.create'))
+    $this->get(route('item.create'))
         ->assertSee('Milk')
         ->assertSee('1.99');
 });
 
-it('can delete an item', function() {
+it('can delete an item', function () {
     $milk = \App\Models\Item::factory()->create([
         'name' => 'Glass of Milk',
         'price' => 1.99,
@@ -45,7 +45,7 @@ it('can delete an item', function() {
     livewire(\App\Http\Livewire\ItemIndex::class)
         ->call('destroy', $milk->id);
 
-    $this->get(route('items.index'))
+    $this->get(route('item.index'))
         ->assertDontSee('Glass of Milk')
         ->assertSee('Glass of Wine')
         ->assertSee('5.99');
