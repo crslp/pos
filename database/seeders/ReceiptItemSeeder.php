@@ -15,6 +15,6 @@ class ReceiptItemSeeder extends Seeder
      */
     public function run()
     {
-        ReceiptItem::factory(10)->create();
+        ReceiptItem::factory(3)->create();
     }
 }
