@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             ReceiptSeeder::class,
             ReceiptItemSeeder::class,
             TableSeeder::class,
-            TableOrderSeeder::class,
+            OrderItemSeeder::class,
         ]);
     }
 }

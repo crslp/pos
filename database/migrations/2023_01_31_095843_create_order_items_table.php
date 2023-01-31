@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('receipts', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignIdFor(\App\Models\Table::class);
             $table->foreignIdFor(\App\Models\Order::class);
-            $table->float('total');
+            $table->foreignIdFor(\App\Models\Item::class);
+            $table->unsignedInteger('split')->nullable();
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('receipts');
+        Schema::dropIfExists('table_orders');
     }
 };

@@ -8,11 +8,6 @@ class Table extends Model
 {
     protected $guarded = ['id'];
 
-    public function getTotalAttribute(): float
-    {
-        return $this->orders->map(fn ($tableOrder) => $tableOrder->item->price)->sum();
-    }
-
     public function receipts()
     {
         return $this->hasMany(Receipt::class);
@@ -20,6 +15,11 @@ class Table extends Model
 
     public function orders()
     {
-        return $this->hasMany(TableOrder::class);
+        return $this->hasMany(Order::class);
+    }
+
+    public function currentOrder()
+    {
+        return $this->orders()->whereNull('paid_at');
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Receipt::class);
             $table->string('name');
             $table->float('price');
-            $table->integer('split');
+            $table->unsignedInteger('split')->nullable();
         });
     }
 

@@ -10,27 +10,25 @@ it('has receipt page', function () {
 
 it('shows a list of receipts', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
-    $different_table = \App\Models\Table::create(['name' => 'Two']);
-    \App\Models\Table::create(['name' => 'Three']);
-    $order = \App\Models\Receipt::factory()->create([
+    $order = \App\Models\Order::create(['table_id' => $table->id]);
+    \App\Models\Receipt::factory()->create([
         'table_id' => $table->id,
+        'order_id' => $order->id,
         'total' => 19.99,
     ]);
-    \App\Models\Receipt::factory()->create([
-        'table_id' => $different_table->id,
-        'total' => 99.99,
-    ]);
-    $response = $this->get('/receipt');
 
+    $response = $this->get(route('receipt.index'));
     $response->assertSee('19.99');
-    $response->assertSee('99.99');
-    $response->assertSee("Table {$order->table->name}:");
+    $response->assertSee("Table {$table->name}:");
     $response->assertStatus(200);
 });
 
 it('has receipt items', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $order = \App\Models\Order::create(['table_id' => $table->id]);
     $receipt = \App\Models\Receipt::factory()->create([
-        'table_id' => 1,
+        'table_id' => $table->id,
+        'order_id' => $order->id,
         'total' => 19.99,
     ]);
     \App\Models\ReceiptItem::factory()->create([

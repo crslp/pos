@@ -3,28 +3,7 @@
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 use function Pest\Livewire\livewire;
 
-it('has table page', function () {
-    $response = $this->get('/table');
-
-    $response->assertStatus(200);
-});
-
-it('lists all tables', function () {
-    app(\Database\Seeders\TableSeeder::class)->run();
-    $response = $this->get('/table');
-    $tables = \App\Models\Table::all()->map(fn ($t) => $t->name)->toArray();
-    $response->assertSee($tables);
-});
-
-it('has table show page', function () {
-    $table = \App\Models\Table::create(['name' => 'One']);
-
-    $response = $this->get(route('table.show', $table->id));
-
-    $response->assertStatus(200);
-});
-
-it('table show page lists all orders', function () {
+it('offers to pay all items of order', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
     $order = \App\Models\Order::create(['table_id' => $table->id]);
     $milk = \App\Models\Item::factory()->create([
@@ -39,18 +18,19 @@ it('table show page lists all orders', function () {
         'order_id' => $order->id,
         'item_id' => $milk->id,
     ]);
+    $order = \App\Models\OrderItem::create([
+        'order_id' => $order->id,
+        'item_id' => $milk->id,
+    ]);
     \App\Models\OrderItem::create([
         'order_id' => $order->id,
         'item_id' => $wine->id,
     ]);
-
     $response = $this->get(route('table.show', $table->id));
-
-    $response->assertSee(['Milk', 'Wine']);
-    $response->assertStatus(200);
+    $response->assertSee(__('Pay all'));
 });
 
-it('table show page allows to add items to order', function () {
+it('table show page does not offer pay all button if no orders are present', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
     $milk = \App\Models\Item::factory()->create([
         'name' => 'Glass of Milk',
@@ -60,16 +40,12 @@ it('table show page allows to add items to order', function () {
         'name' => 'Glass of Wine',
         'price' => 5.99,
     ]);
-
-    $response = $this->get(route('table.show', $table->id));
-    $response->assertSee(__('Add to order'));
 
     livewire(\App\Http\Livewire\TableShow::class, ['table' => $table])
-        ->call('addToOrder', $milk->id)
-        ->assertSee(__('Added'));
+        ->assertDontSee(__('Pay all'));
 });
 
-it('allows to remove items from order', function () {
+it('has a checkout page', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
     $order = \App\Models\Order::create(['table_id' => $table->id]);
     $milk = \App\Models\Item::factory()->create([
@@ -80,7 +56,7 @@ it('allows to remove items from order', function () {
         'name' => 'Glass of Wine',
         'price' => 5.99,
     ]);
-    $orderItem = \App\Models\OrderItem::create([
+    \App\Models\OrderItem::create([
         'order_id' => $order->id,
         'item_id' => $milk->id,
     ]);
@@ -89,24 +65,24 @@ it('allows to remove items from order', function () {
         'item_id' => $wine->id,
     ]);
 
-    $response = $this->get(route('table.show', $table->id));
-    $response->assertSee(__('Remove'));
-
-    livewire(\App\Http\Livewire\TableShow::class, ['table' => $table])
-        ->call('removeFromOrder', $orderItem->id)
-        ->assertSee(__('Removed'));
+    $this->get(route('checkout.show', $order->id))
+        ->assertSee($table->name)
+        ->assertSee(__('Order').": {$order->id}")
+        ->assertSee(7.98)
+        ->assertSee(__('Confirm Payment'))
+        ->assertSee(__('Back to table'));
 });
 
-it('shows total order amount', function () {
+it('can pay all items of an order', function () {
     $table = \App\Models\Table::create(['name' => 'One']);
     $order = \App\Models\Order::create(['table_id' => $table->id]);
     $milk = \App\Models\Item::factory()->create([
         'name' => 'Glass of Milk',
-        'price' => 4.99,
+        'price' => 1.99,
     ]);
     $wine = \App\Models\Item::factory()->create([
         'name' => 'Glass of Wine',
-        'price' => 9.99,
+        'price' => 5.99,
     ]);
     \App\Models\OrderItem::create([
         'order_id' => $order->id,
@@ -117,6 +93,44 @@ it('shows total order amount', function () {
         'item_id' => $wine->id,
     ]);
 
-    $response = $this->get(route('table.show', $table->id));
-    $response->assertSee(14.98);
+    $response = $this->post(route('checkout.pay', $order->id), [
+        'all' => true,
+    ]);
+
+    $response->assertRedirectToRoute('table.index');
+    $this->assertTrue($table->currentOrder->isEmpty());
+});
+
+it('can pay some items of a table (split-payment)', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $order = \App\Models\Order::create(['table_id' => $table->id]);
+    $milk = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Milk',
+        'price' => 1.99,
+    ]);
+    $wine = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Wine',
+        'price' => 5.99,
+    ]);
+    $paidOrderItem = \App\Models\OrderItem::create([
+        'order_id' => $order->id,
+        'item_id' => $wine->id,
+        'split' => 0,
+    ]);
+    $unpaidOrderItem = \App\Models\OrderItem::create([
+        'order_id' => $order->id,
+        'item_id' => $wine->id,
+    ]);
+    $secondUnpaidOrderItem = \App\Models\OrderItem::create([
+        'order_id' => $order->id,
+        'item_id' => $wine->id,
+    ]);
+    $response = $this->post(route('checkout.pay', $order->id), [
+        'items' => [
+            ['id' => $unpaidOrderItem->id],
+        ],
+    ]);
+
+    $response->assertRedirectToRoute('table.index');
+    $this->assertTrue($table->currentOrder->isNotEmpty());
 });

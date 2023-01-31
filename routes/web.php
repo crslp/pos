@@ -21,3 +21,5 @@ Route::get('/', function () {
 Route::resource('item', Controllers\ItemController::class);
 Route::resource('receipt', Controllers\ReceiptController::class);
 Route::resource('table', Controllers\TableController::class);
+Route::get('checkout/{order}', [Controllers\CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('checkout/{order}/pay', [Controllers\CheckoutController::class, 'pay'])->name('checkout.pay');

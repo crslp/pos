@@ -3,15 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\Item;
+use App\Models\OrderItem;
 use App\Models\Table;
-use App\Models\TableOrder;
 use Livewire\Component;
 
 class TableShow extends Component
 {
     public Table $table;
 
-    public $orders;
+    public $order;
+
+    public $orderItems;
 
     public ?float $total = null;
 
@@ -25,23 +27,25 @@ class TableShow extends Component
 
     public function refresh()
     {
-        $this->orders = $this->table->orders()->get();
-        $this->total = $this->table->refresh()->total;
+        $this->order = $this->table->currentOrder->first();
+        $this->orderItems = $this->order ? $this->order->items : [];
+        $this->total = optional($this->order)->total;
         $this->items = Item::all();
     }
 
     public function addToOrder(string $item)
     {
         $item = Item::findOrFail($item);
-        $this->table->orders()->create(['item_id' => $item->id]);
+        $this->order = $this->order ?? $this->table->orders()->create();
+        $this->order->items()->create(['item_id' => $item->id]);
         $this->refresh();
         session()->flash('message', __('Added'));
     }
 
-    public function removeFromOrder(string $item)
+    public function removeFromOrder(string $orderItemId)
     {
-        $order = TableOrder::findOrFail($item);
-        $order->delete();
+        $orderItem = OrderItem::findOrFail($orderItemId);
+        $orderItem->delete();
         $this->refresh();
         session()->flash('message', __('Removed'));
     }

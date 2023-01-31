@@ -3,11 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Item;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Table;
-use App\Models\TableOrder;
 use Illuminate\Database\Seeder;
 
-class TableOrderSeeder extends Seeder
+class OrderItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,13 +17,13 @@ class TableOrderSeeder extends Seeder
      */
     public function run()
     {
-        $table = Table::all()->random();
+        $order = Order::factory()->create(['table_id' => Table::all()->random()->id]);
 
         $items = Item::take(rand(1, 5))->get();
 
         foreach ($items as $item) {
-            TableOrder::create([
-                'table_id' => $table->id,
+            OrderItem::create([
+                'order_id' => $order->id,
                 'item_id' => $item->id,
             ]);
         }
