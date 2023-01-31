@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-    Route::resource('items', Controllers\ItemController::class);
-    Route::resource('receipt', Controllers\ReceiptController::class);
+Route::resource('items', Controllers\ItemController::class);
+Route::resource('receipt', Controllers\ReceiptController::class);

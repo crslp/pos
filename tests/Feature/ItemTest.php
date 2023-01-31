@@ -18,7 +18,7 @@ it('can list items', function () {
 });
 
 it('has a create form', function () {
-   $this->get(route('items.create'))->assertSee(__('Save'));
+    $this->get(route('items.create'))->assertSee(__('Save'));
 });
 
 it('can create an item', function () {

@@ -12,7 +12,7 @@ class ItemIndex extends Component
 
     public function render()
     {
-        return view('livewire.item-index',[
+        return view('livewire.item-index', [
             'items' => Item::paginate(10),
         ]);
     }

@@ -11,6 +11,7 @@ class ItemCreate extends Component
     use WithPagination;
 
     public string $name;
+
     public $price;
 
     protected $rules = [
