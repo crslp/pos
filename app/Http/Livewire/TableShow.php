@@ -36,7 +36,7 @@ class TableShow extends Component
 
     public function refresh()
     {
-        $this->order = $this->table->currentOrder->first();
+        $this->order = $this->table->currentOrder()->first();
         $this->orderItems = $this->order ? $this->order->items()->get() : [];
         $this->total = $this->order ? $this->order->refresh()->total : null;
         $this->items = Item::all();
@@ -78,6 +78,10 @@ class TableShow extends Component
         $this->splitTotal = $this->splitItems->map(fn ($i) => $i['price'])->sum();
     }
 
+    /**
+     * @todo: add test
+     * @return void
+     */
     public function confirmPaySplit()
     {
         $orderItems = collect($this->split)->flatten()->map(fn ($id) => \App\Models\OrderItem::find($id));
