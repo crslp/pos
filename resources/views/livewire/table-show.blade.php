@@ -56,7 +56,7 @@
                 {{ __('Total') }}: <span class="fw-bold">{{ $total }} EUR</span>
             </div>
             @if (empty($split) && $orderItems->filter(fn ($o) => !is_null($o->split))->isEmpty())
-                <a href="{{ route('checkout.show', $order->id) }}">{{ __('Pay all') }}</a>
+                <a class="btn btn-primary my-4" href="{{ route('checkout.show', $order->id) }}">{{ __('Pay all') }}</a>
             @endif
             @if (!empty($split))
                 <button type="button" class="btn btn-secondary" wire:click="toggleSplitModal">{{ __('Pay Split') }}</button>
