@@ -80,6 +80,7 @@ class TableShow extends Component
 
     /**
      * @todo: add test
+     *
      * @return void
      */
     public function confirmPaySplit()
