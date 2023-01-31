@@ -1,5 +1,5 @@
 <x-layout>
-    <div>
+    <div class="mb-5">
         <a href="{{ route('table.show', $order->table->id) }}">{{ __('Back to table') }}</a>
     </div>
     <div>

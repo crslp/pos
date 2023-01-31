@@ -9,11 +9,12 @@ use Livewire\WithPagination;
 class ReceiptIndex extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
         return view('livewire.receipt-index', [
-            'receipts' => Receipt::paginate(10),
+            'receipts' => Receipt::orderBy('id', 'DESC')->paginate(10),
         ]);
     }
 }

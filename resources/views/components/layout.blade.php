@@ -20,8 +20,12 @@
     <div>
 
         <!-- Page Content -->
-        <main>
-            {{ $slot }}
+        <main class="container my-5">
+            <div class="card">
+                <div class="card-body">
+                    {{ $slot }}
+                </div>
+            </div>
         </main>
     </div>
 
