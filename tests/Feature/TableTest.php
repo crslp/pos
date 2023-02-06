@@ -120,3 +120,22 @@ it('shows total order amount', function () {
     $response = $this->get(route('table.show', $table->id));
     $response->assertSee(14.98);
 });
+
+it('will delete the order if no order-items are left', function () {
+    $table = \App\Models\Table::create(['name' => 'One']);
+    $order = \App\Models\Order::create(['table_id' => $table->id]);
+    $wine = \App\Models\Item::factory()->create([
+        'name' => 'Glass of Wine',
+        'price' => 9.99,
+    ]);
+    $orderItem = \App\Models\OrderItem::create([
+        'order_id' => $order->id,
+        'item_id' => $wine->id,
+    ]);
+
+    livewire(\App\Http\Livewire\TableShow::class, ['table' => $table])
+            ->call('removeFromOrder', $orderItem->id);
+
+    $orders = \App\Models\Order::all();
+    $this->assertTrue($orders->isEmpty());
+});

@@ -54,7 +54,12 @@ class TableShow extends Component
     public function removeFromOrder(string $orderItemId)
     {
         $orderItem = OrderItem::findOrFail($orderItemId);
+
         $orderItem->delete();
+        if ($this->order->fresh()->items->isEmpty()) {
+            $this->order->delete();
+        }
+
         $this->refresh();
         session()->flash('message', __('Removed'));
     }
