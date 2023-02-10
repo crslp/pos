@@ -21,5 +21,7 @@ Currently, no electronic payment is possible. The payment is supposed to be done
 Feel free to contribute to this project.
 
 ## License
-
 [MIT license](https://opensource.org/licenses/MIT).
+
+## Author
+[Pretzels.dev](https://pretzels.dev) / [Chris Wolf](https://github.com/crslp) 
